@@ -2,12 +2,21 @@ const express = require('express');
 const routes = require('../Routes/routes');
 const cors = require('cors');
 const {boomErrorHandler} = require('../Middlewares/errorHandlers');
+const {baseUrl} = require('../Types/types');
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
+
+const allowedSides = [baseUrl];
 
 app.use(cors({
-    origin: "*"
+    origin: (origin, callback) => {
+        if (allowedSides.includes(origin) || !origin) {
+            callback(null, true);   
+        } else {
+            callback(new Error('Not allowed side'));
+        }
+    }
 }))
 
 routes(app);

@@ -64,7 +64,7 @@ class BookManager{
             const file = await fs.createWriteStream(filepath);
             const stream = bookResponse.data.pipe(file)
             return {stream, filepath};
-        } catch {
+        } catch(error) {
             throw boom.serverUnavailable(`Scrapped web ${this._url} is not working. Downloading step`);
         }
     }
@@ -72,7 +72,7 @@ class BookManager{
     getSession = async (bookId) => {
         try {
             const response = await gaxios({
-                url: this._url+bookId,
+                url: this._url+'/ebooks/'+bookId,
             });
             return response.headers['set-cookie'].split(';')[0];
         } catch{
