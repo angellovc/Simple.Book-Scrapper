@@ -58,6 +58,7 @@ class BookManager{
             const url = `${this._url}/ebooks/${bookId}.kindle.noimages?${session}`;
             const filepath = path.join(__dirname, `../${this.getBook(bookId)?.name.replace(" ", "_")}.mobi`);
             const bookResponse = await gaxios({
+                timeout: 50000,
                 url: url,
                 responseType: "stream",
             });
